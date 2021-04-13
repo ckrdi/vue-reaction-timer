@@ -1,17 +1,42 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <h1>{{ title }}</h1>
+  <button @click="startPlay" :disabled="isPlay">Play</button>
+  <Block v-if="isPlay" :delay="delayShow" @end="endGame" />
+  <Result v-if="showResult" :score="score" />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Block from "./components/Block.vue";
+import Result from "./components/Result.vue";
 
 export default {
-  name: 'App',
+  name: "App",
+  data() {
+    return {
+      title: "Reaction Timer",
+      isPlay: false,
+      delayShow: null,
+      showResult: false,
+      score: null,
+    };
+  },
   components: {
-    HelloWorld
-  }
-}
+    Block,
+    Result,
+  },
+  methods: {
+    startPlay() {
+      this.isPlay = true;
+      this.showResult = false;
+      this.delayShow = 2000 + Math.random() * 5000;
+    },
+    endGame(reactionTime) {
+      this.showResult = true;
+      this.score = reactionTime;
+      this.isPlay = false;
+    },
+  },
+};
 </script>
 
 <style>
@@ -20,7 +45,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #444;
   margin-top: 60px;
 }
 </style>
